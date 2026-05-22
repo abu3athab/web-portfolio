@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Store — Proof of Concept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="store-header">
+    <a href="../../index.html" class="back-link">← Portfolio</a>
+    <div class="brand">
+      <span class="brand-icon">🛒</span>
+      <h1>Simple Store</h1>
+      <span class="badge">POC</span>
+    </div>
+    <button type="button" class="cart-toggle" id="cartToggle" aria-label="Open cart">
+      <span>Cart</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main class="store-main">
+    <section class="hero-banner">
+      <h2>Everyday essentials, one cart away</h2>
+      <p>A minimal e-commerce proof of concept — browse products, add to cart, and review your order.</p>
+    </section>
+
+    <section class="store-block">
+      <div class="block-header">
+        <h3 class="section-label">Filter by category</h3>
+        <p class="section-desc">Chip strip — tap a category to filter the catalog below.</p>
+      </div>
+      <div class="chip-scroll-wrap">
+        <div class="chip-track" id="chipTrack"></div>
+      </div>
+    </section>
+
+    <section class="products-section" id="catalog">
+      <h3 class="section-label">All products</h3>
+      <div class="products-grid" id="productsGrid"></div>
+      <p class="filter-empty" id="filterEmpty" hidden>No products in this category.</p>
+    </section>
+
+    <section class="store-block store-block-scroll">
+      <div class="block-header">
+        <h3 class="section-label">Trending now</h3>
+      </div>
+      <div class="h-scroll-wrap">
+        <div class="h-scroll-track" id="trendingTrack" tabindex="0" aria-label="Trending products"></div>
+      </div>
+    </section>
+
+    <section class="store-block store-block-alt">
+      <div class="block-header">
+        <h3 class="section-label">Deals & highlights</h3>
+        <p class="section-desc">Bento layout — mixed tiles for promos and store info.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bento-tile bento-wide bento-promo">
+          <span class="bento-label">Limited offer</span>
+          <h3>Free shipping over $50</h3>
+          <p>Add items to your cart and hit the threshold — demo checkout included.</p>
+        </div>
+        <div class="bento-tile bento-stat">
+          <strong>8</strong>
+          <span>Products in catalog</span>
+        </div>
+        <div class="bento-tile bento-stat">
+          <strong>24h</strong>
+          <span>Demo delivery window</span>
+        </div>
+        <div class="bento-tile">
+          <span class="bento-emoji">🏷️</span>
+          <h3>New arrivals</h3>
+          <p>Fresh picks added weekly in this proof of concept.</p>
+        </div>
+        <div class="bento-tile">
+          <span class="bento-emoji">🔒</span>
+          <h3>Secure demo</h3>
+          <p>No real payments — safe to explore cart flows.</p>
+        </div>
+        <div class="bento-tile bento-quote">
+          <blockquote>“Add to cart, review your order, checkout — all in one page.”</blockquote>
+        </div>
+        <div class="bento-tile bento-accent-bar">
+          <h3>Need help?</h3>
+          <p>POC built to showcase e-commerce UI patterns for your portfolio.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="store-block">
+      <div class="block-header">
+        <h3 class="section-label">Why shop here</h3>
+        <p class="section-desc">List layout — great for perks, shipping, and trust signals.</p>
+      </div>
+      <ul class="list-showcase">
+        <li class="list-row">
+          <div class="list-row-icon list-accent-1">🚚</div>
+          <div class="list-row-body">
+            <h3>Fast delivery</h3>
+            <p>Demo 24–48 hour shipping on all orders in this proof of concept.</p>
+          </div>
+          <span class="list-row-badge">Free over $50</span>
+        </li>
+        <li class="list-row">
+          <div class="list-row-icon list-accent-2">🛒</div>
+          <div class="list-row-body">
+            <h3>Easy add to cart</h3>
+            <p>One-click add from grid, trending row, or quick cards — cart updates instantly.</p>
+          </div>
+          <span class="list-row-badge">Live cart</span>
+        </li>
+        <li class="list-row">
+          <div class="list-row-icon list-accent-3">↩️</div>
+          <div class="list-row-body">
+            <h3>Hassle-free returns</h3>
+            <p>30-day return policy shown for UX demo purposes only.</p>
+          </div>
+          <span class="list-row-badge">30 days</span>
+        </li>
+        <li class="list-row">
+          <div class="list-row-icon list-accent-4">💳</div>
+          <div class="list-row-body">
+            <h3>Demo checkout</h3>
+            <p>Review totals in the cart panel, then run a simulated checkout.</p>
+          </div>
+          <span class="list-row-badge">No charge</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <div class="cart-panel-inner">
+      <div class="cart-panel-header">
+        <h2>Your cart</h2>
+        <button type="button" class="close-cart" id="closeCart" aria-label="Close cart">×</button>
+      </div>
+      <ul class="cart-items" id="cartItems"></ul>
+      <p class="cart-empty" id="cartEmpty">Your cart is empty. Add something to get started.</p>
+      <div class="cart-footer" id="cartFooter" hidden>
+        <div class="cart-total">
+          <span>Total</span>
+          <strong id="cartTotal">$0.00</strong>
+        </div>
+        <button type="button" class="btn-checkout" id="checkoutBtn">Checkout (demo)</button>
+        <button type="button" class="btn-clear" id="clearCartBtn">Clear cart</button>
+      </div>
+    </div>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
