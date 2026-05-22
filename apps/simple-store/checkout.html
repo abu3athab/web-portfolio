@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Simple Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="checkout-page">
+
+  <header class="store-header">
+    <a href="index.html" class="back-link">← Back to store</a>
+    <div class="brand">
+      <span class="brand-icon">🛒</span>
+      <h1>Checkout</h1>
+      <span class="badge">POC</span>
+    </div>
+    <span class="checkout-step" id="checkoutStep">Step 2 of 2</span>
+  </header>
+
+  <main class="checkout-main" id="checkoutMain">
+    <div class="checkout-layout">
+      <section class="checkout-panel">
+        <h2 class="checkout-heading">Payment method</h2>
+        <p class="checkout-sub">Select a demo payment option — no real charges.</p>
+
+        <form class="payment-form" id="paymentForm">
+          <label class="pay-option">
+            <input type="radio" name="payment" value="card" checked />
+            <span class="pay-card">
+              <span class="pay-icon">💳</span>
+              <span class="pay-info">
+                <strong>Credit / Debit card</strong>
+                <span>Visa, Mastercard, Amex (demo)</span>
+              </span>
+            </span>
+          </label>
+
+          <label class="pay-option">
+            <input type="radio" name="payment" value="paypal" />
+            <span class="pay-card">
+              <span class="pay-icon">🅿️</span>
+              <span class="pay-info">
+                <strong>PayPal</strong>
+                <span>Redirect flow simulated</span>
+              </span>
+            </span>
+          </label>
+
+          <label class="pay-option">
+            <input type="radio" name="payment" value="apple" />
+            <span class="pay-card">
+              <span class="pay-icon">🍎</span>
+              <span class="pay-info">
+                <strong>Apple Pay</strong>
+                <span>One-tap wallet demo</span>
+              </span>
+            </span>
+          </label>
+
+          <label class="pay-option">
+            <input type="radio" name="payment" value="cod" />
+            <span class="pay-card">
+              <span class="pay-icon">💵</span>
+              <span class="pay-info">
+                <strong>Cash on delivery</strong>
+                <span>Pay when your order arrives</span>
+              </span>
+            </span>
+          </label>
+        </form>
+      </section>
+
+      <aside class="order-summary">
+        <h2 class="checkout-heading">Order summary</h2>
+        <ul class="summary-items" id="summaryItems"></ul>
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="summarySubtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span id="summaryShipping">$0.00</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <strong id="summaryTotal">$0.00</strong>
+          </div>
+        </div>
+        <button type="button" class="btn-checkout btn-place-order" id="placeOrderBtn">
+          Place order (demo)
+        </button>
+      </aside>
+    </div>
+  </main>
+
+  <section class="checkout-success" id="checkoutSuccess" hidden>
+    <div class="success-card">
+      <span class="success-icon">✓</span>
+      <h2>Order placed!</h2>
+      <p id="successMessage">Your demo order was submitted successfully.</p>
+      <a href="index.html" class="btn-checkout">Continue shopping</a>
+    </div>
+  </section>
+
+  <script src="store-shared.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>
