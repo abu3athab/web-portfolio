@@ -101,15 +101,23 @@ body {
 }
 
 .store-main {
+  --section-gap: 56px;
   max-width: 1100px;
   margin: 0 auto;
   padding: 32px 24px 80px;
 }
 
+.store-main > section {
+  margin-bottom: var(--section-gap);
+}
+
+.store-main > section:last-child {
+  margin-bottom: 0;
+}
+
 .hero-banner {
   text-align: center;
   padding: 48px 24px;
-  margin-bottom: 48px;
   border-radius: 24px;
   background:
     radial-gradient(circle at top left, rgba(34, 197, 94, 0.25), transparent 45%),
@@ -432,10 +440,6 @@ body {
 
 /* Store layout blocks */
 
-.store-block {
-  margin-bottom: 56px;
-}
-
 .store-block-alt {
   padding: 32px;
   border-radius: 24px;
@@ -460,15 +464,6 @@ body {
 }
 
 /* Horizontal scroll */
-
-.store-block-scroll {
-  padding-top: 40px;
-  margin-top: 16px;
-}
-
-.store-block-scroll .block-header {
-  margin-bottom: 28px;
-}
 
 .h-scroll-wrap {
   position: relative;
@@ -906,7 +901,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 56px;
 }
 
 .promo-banner {
@@ -951,7 +945,6 @@ body {
   border-radius: 20px;
   background: rgba(15, 23, 42, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 40px;
 }
 
 .stat-item {
