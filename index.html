@@ -3,71 +3,597 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Portfolio</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>Ahmed Alkhatib Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:#0b1220;
+      color:#e5e7eb;
+      line-height:1.7;
+      overflow-x:hidden;
+    }
+
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================== */
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:1000;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      padding:20px 60px;
+
+      background:rgba(15,23,42,0.75);
+      backdrop-filter:blur(14px);
+
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav h2{
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:0.5px;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:30px;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:#cbd5e1;
+      font-size:15px;
+      transition:0.3s ease;
+    }
+
+    .nav-links a:hover{
+      color:#38bdf8;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero{
+      min-height:95vh;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      text-align:center;
+      padding:0 20px;
+
+      background:
+        radial-gradient(circle at top,
+        rgba(56,189,248,0.18),
+        transparent 35%),
+
+        radial-gradient(circle at bottom right,
+        rgba(139,92,246,0.15),
+        transparent 30%),
+
+        linear-gradient(to bottom,#0b1220,#0f172a);
+    }
+
+    .hero-content{
+      max-width:900px;
+    }
+
+    .hero h1{
+      font-size:4rem;
+      line-height:1.1;
+      font-weight:800;
+
+      margin-bottom:24px;
+    }
+
+    .hero span{
+      background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero p{
+      color:#94a3b8;
+      font-size:1.2rem;
+      max-width:750px;
+      margin:auto;
+    }
+
+    .hero-buttons{
+      margin-top:40px;
+
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:14px 28px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s ease;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#0ea5e9,#3b82f6);
+      color:white;
+      box-shadow:0 10px 30px rgba(14,165,233,0.25);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-3px);
+    }
+
+    .btn-secondary{
+      border:1px solid rgba(255,255,255,0.1);
+      color:white;
+      background:rgba(255,255,255,0.03);
+    }
+
+    .btn-secondary:hover{
+      background:rgba(255,255,255,0.07);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================== */
+
+    .section{
+      padding:110px 25px;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:60px;
+    }
+
+    .section-title h2{
+      font-size:2.5rem;
+      margin-bottom:12px;
+    }
+
+    .section-title p{
+      color:#94a3b8;
+      max-width:700px;
+      margin:auto;
+    }
+
+    /* =========================
+       ABOUT
+    ========================== */
+
+    .about-box{
+      background:rgba(15,23,42,0.7);
+
+      border:1px solid rgba(255,255,255,0.06);
+
+      border-radius:28px;
+
+      padding:50px;
+
+      text-align:center;
+
+      backdrop-filter:blur(10px);
+
+      box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .about-box p{
+      max-width:850px;
+      margin:auto;
+      color:#94a3b8;
+      font-size:1.1rem;
+    }
+
+    /* =========================
+       APPS SECTION
+    ========================== */
+
+    .dark{
+      background:#0f172a;
+    }
+
+    .apps-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:30px;
+    }
+
+    .app-card{
+      background:linear-gradient(
+        145deg,
+        rgba(30,41,59,0.95),
+        rgba(15,23,42,0.98)
+      );
+
+      border:1px solid rgba(255,255,255,0.06);
+
+      border-radius:28px;
+
+      overflow:hidden;
+
+      transition:all 0.35s ease;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .app-card:hover{
+      transform:translateY(-10px);
+
+      border-color:rgba(56,189,248,0.35);
+
+      box-shadow:
+        0 20px 40px rgba(14,165,233,0.15),
+        0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    .screen{
+      height:260px;
+      width:100%;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .screen::after{
+      content:"";
+      position:absolute;
+      inset:0;
+
+      background:
+        linear-gradient(
+          rgba(255,255,255,0.08),
+          transparent
+        );
+    }
+
+    .mock1{
+      background:
+        radial-gradient(circle at top left,#22c55e,transparent 40%),
+        linear-gradient(135deg,#0f172a,#0ea5e9);
+    }
+
+    .mock2{
+      background:
+        radial-gradient(circle at top left,#fb923c,transparent 40%),
+        linear-gradient(135deg,#111827,#ef4444);
+    }
+
+    .mock3{
+      background:
+        radial-gradient(circle at top left,#a855f7,transparent 40%),
+        linear-gradient(135deg,#0f172a,#3b82f6);
+    }
+
+    .card-content{
+      padding:28px;
+    }
+
+    .card-content h3{
+      font-size:1.4rem;
+      margin-bottom:12px;
+    }
+
+    .card-content p{
+      color:#94a3b8;
+      font-size:15px;
+    }
+
+    /* =========================
+       CONTACT
+    ========================== */
+
+    .contact-box{
+      text-align:center;
+
+      background:rgba(15,23,42,0.7);
+
+      border:1px solid rgba(255,255,255,0.06);
+
+      border-radius:28px;
+
+      padding:60px 30px;
+    }
+
+    .contact-box p{
+      color:#94a3b8;
+      margin-top:10px;
+    }
+
+    .contact-email{
+      margin-top:25px;
+      display:inline-block;
+
+      color:#38bdf8;
+      text-decoration:none;
+      font-weight:600;
+      font-size:1.1rem;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer{
+      text-align:center;
+      padding:35px 20px;
+      color:#64748b;
+      font-size:14px;
+      border-top:1px solid rgba(255,255,255,0.04);
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media(max-width:992px){
+
+      .apps-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero h1{
+        font-size:2.8rem;
+      }
+
+      .nav{
+        padding:18px 20px;
+      }
+
+      .section{
+        padding:80px 20px;
+      }
+
+      .about-box,
+      .contact-box{
+        padding:35px 25px;
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .hero h1{
+        font-size:2.2rem;
+      }
+
+      .hero p{
+        font-size:1rem;
+      }
+
+      .nav-links{
+        gap:18px;
+      }
+
+      .nav-links a{
+        font-size:14px;
+      }
+
+      .section-title h2{
+        font-size:2rem;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
-  <!-- Hero -->
-  <header class="hero">
-    <div class="container">
-      <h1>John Doe</h1>
-      <p>iOS & Frontend Developer</p>
-      <a href="#projects" class="btn">View My Work</a>
+  <!-- NAVBAR -->
+  <header class="nav">
+
+    <h2>Ahmed Alkhatib</h2>
+
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#apps">Work</a>
+      <a href="#contact">Contact</a>
     </div>
+
   </header>
 
-  <!-- About -->
-  <section class="section">
-    <div class="container">
-      <h2>About Me</h2>
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <h1>
+        Mobile & Web Developer
+        <br>
+        <span>Crafting Premium Digital Experiences</span>
+      </h1>
+
       <p>
-        I am a passionate developer focused on building clean, modern, and user-friendly applications.
-        I specialize in SwiftUI, mobile apps, and responsive web design with a strong focus on performance and UX.
+        I build modern mobile and web applications focused on beautiful UI,
+        smooth UX, high performance, and scalable architecture.
       </p>
-    </div>
-  </section>
 
-  <!-- Projects -->
-  <section id="projects" class="section dark">
-    <div class="container">
-      <h2>Projects</h2>
-
-      <div class="grid">
-        <div class="card">
-          <h3>Fitness App UI</h3>
-          <p>Modern workout tracking mobile interface built with SwiftUI.</p>
-        </div>
-
-        <div class="card">
-          <h3>Portfolio Website</h3>
-          <p>Responsive personal portfolio with clean UI and animations.</p>
-        </div>
-
-        <div class="card">
-          <h3>E-commerce Concept</h3>
-          <p>Product browsing UI with smooth navigation and layout system.</p>
-        </div>
+      <div class="hero-buttons">
+        <a href="#apps" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-secondary">Contact Me</a>
       </div>
+
     </div>
+
   </section>
 
-  <!-- Contact -->
-  <section class="section">
+  <!-- ABOUT -->
+  <section id="about" class="section">
+
     <div class="container">
-      <h2>Contact</h2>
-      <p>Let’s work together — feel free to reach out.</p>
+
+      <div class="section-title">
+        <h2>About Me</h2>
+
+        <p>
+          Passionate about creating visually polished products
+          with modern technologies and seamless user experiences.
+        </p>
+      </div>
+
+      <div class="about-box">
+
+        <p>
+          I specialize in building modern mobile and web applications with clean UI,
+          smooth UX, and scalable architecture. My focus is crafting fast,
+          responsive, and visually polished digital products that provide
+          exceptional user experiences across all devices.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- APPS -->
+  <section id="apps" class="section dark">
+
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Featured Applications</h2>
+
+        <p>
+          A selection of modern applications designed with performance,
+          scalability, and user experience in mind.
+        </p>
+      </div>
+
+      <div class="apps-grid">
+
+        <!-- CARD 1 -->
+        <div class="app-card">
+
+          <div class="screen mock1"></div>
+
+          <div class="card-content">
+
+            <h3>FitTrack Pro</h3>
+
+            <p>
+              AI-powered fitness tracking app with personalized workouts,
+              analytics, and real-time health insights.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="app-card">
+
+          <div class="screen mock2"></div>
+
+          <div class="card-content">
+
+            <h3>ShopEase</h3>
+
+            <p>
+              Modern e-commerce platform with seamless checkout,
+              advanced product browsing, and premium UI interactions.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="app-card">
+
+          <div class="screen mock3"></div>
+
+          <div class="card-content">
+
+            <h3>TravelMate</h3>
+
+            <p>
+              Smart travel planner featuring maps, itineraries,
+              recommendations, and intelligent destination discovery.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>Contact</h2>
+
+        <p>
+          Interested in working together or building something amazing?
+        </p>
+
+      </div>
 
       <div class="contact-box">
-        <p>Email: <strong>youremail@example.com</strong></p>
+
+        <h3>Let’s Build Something Great</h3>
+
+        <p>
+          Available for freelance projects, collaborations,
+          and full-stack development opportunities.
+        </p>
+
+        <a href="mailto:ahmed.alkhatib13@gmail.com" class="contact-email">
+          ahmed.alkhatib13@gmail.com
+        </a>
+
       </div>
+
     </div>
+
   </section>
 
+  <!-- FOOTER -->
   <footer>
-    <p>© 2026 John Doe. All rights reserved.</p>
+    © 2026 Ahmed Alkhatib Inc.
   </footer>
 
 </body>
