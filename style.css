@@ -279,10 +279,32 @@ body {
 }
 
 .app-card-link {
-  text-decoration: none;
-  color: inherit;
   display: block;
   cursor: pointer;
+}
+
+.app-card-link,
+.app-card-link:visited,
+.app-card-link:hover,
+.app-card-link:active,
+.app-card-link:focus {
+  text-decoration: none;
+  color: inherit;
+}
+
+.app-card-link .card-content h3,
+.app-card-link:visited .card-content h3 {
+  color: #e5e7eb;
+}
+
+.app-card-link .card-content p,
+.app-card-link:visited .card-content p {
+  color: #94a3b8;
+}
+
+.app-card-link:visited .card-cta,
+.app-card-link .card-cta {
+  color: #38bdf8;
 }
 
 .app-card:hover,
