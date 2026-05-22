@@ -57,12 +57,20 @@ body {
   text-decoration: none;
   color: #cbd5e1;
   font-size: 15px;
+  padding: 6px 14px;
+  border-radius: 999px;
   transition: 0.3s ease;
 }
 
-.nav-links a:hover,
+.nav-links a:hover {
+  color: #38bdf8;
+}
+
 .nav-links a.active {
   color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  font-weight: 600;
 }
 
 /* HERO */
