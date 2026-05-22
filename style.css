@@ -278,10 +278,26 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-.app-card:hover {
+.app-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.app-card:hover,
+.app-card-link:hover {
   transform: translateY(-10px);
   border-color: rgba(56, 189, 248, 0.35);
   box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15), 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.card-cta {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #38bdf8;
 }
 
 .screen {
