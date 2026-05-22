@@ -1,21 +1,12 @@
-const PRODUCTS = [
-  { id: "p1", name: "Wireless Earbuds", price: 49.99, emoji: "🎧", category: "Audio" },
-  { id: "p2", name: "Desk Lamp", price: 34.5, emoji: "💡", category: "Home" },
-  { id: "p3", name: "Water Bottle", price: 18.0, emoji: "🥤", category: "Outdoors" },
-  { id: "p4", name: "Notebook Set", price: 12.99, emoji: "📓", category: "Stationery" },
-  { id: "p5", name: "Phone Stand", price: 15.99, emoji: "📱", category: "Accessories" },
-  { id: "p6", name: "Coffee Mug", price: 9.99, emoji: "☕", category: "Kitchen" },
-  { id: "p7", name: "Backpack", price: 59.0, emoji: "🎒", category: "Bags" },
-  { id: "p8", name: "USB-C Hub", price: 42.0, emoji: "🔌", category: "Tech" },
-];
-
-const TRENDING_IDS = ["p1", "p7", "p6", "p8", "p3", "p5"];
-const STORAGE_KEY = "simple-store-cart";
+const PRODUCTS = StoreProducts.list;
+const TRENDING_IDS = StoreProducts.trendingIds;
 
 const productsGrid = document.getElementById("productsGrid");
 const trendingTrack = document.getElementById("trendingTrack");
 const chipTrack = document.getElementById("chipTrack");
 const filterEmpty = document.getElementById("filterEmpty");
+const spotlightEl = document.getElementById("spotlightProduct");
+const compactRowsEl = document.getElementById("compactRows");
 const cartItemsEl = document.getElementById("cartItems");
 const cartEmptyEl = document.getElementById("cartEmpty");
 const cartFooterEl = document.getElementById("cartFooter");
@@ -28,35 +19,11 @@ const closeCart = document.getElementById("closeCart");
 const clearCartBtn = document.getElementById("clearCartBtn");
 const checkoutBtn = document.getElementById("checkoutBtn");
 
-let cart = loadCart();
+let cart = StoreCart.load();
 let activeCategory = "All";
 
-function loadCart() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : {};
-  } catch {
-    return {};
-  }
-}
-
 function saveCart() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-}
-
-function formatPrice(n) {
-  return `$${n.toFixed(2)}`;
-}
-
-function getCartCount() {
-  return Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-}
-
-function getCartTotal() {
-  return Object.entries(cart).reduce((sum, [id, qty]) => {
-    const product = PRODUCTS.find((p) => p.id === id);
-    return sum + (product ? product.price * qty : 0);
-  }, 0);
+  StoreCart.save(cart);
 }
 
 function addToCart(id) {
@@ -121,7 +88,7 @@ function productCardHtml(p, compact = false) {
       <article class="h-scroll-item">
         <div class="product-visual">${p.emoji}</div>
         <h4>${p.name}</h4>
-        <p class="product-price">${formatPrice(p.price)}</p>
+        <p class="product-price">${StoreCart.formatPrice(p.price)}</p>
         <button type="button" class="btn-add" data-id="${p.id}">Add to cart</button>
       </article>
     `;
@@ -131,7 +98,7 @@ function productCardHtml(p, compact = false) {
       <div class="product-visual">${p.emoji}</div>
       <span class="product-category">${p.category}</span>
       <h3>${p.name}</h3>
-      <p class="product-price">${formatPrice(p.price)}</p>
+      <p class="product-price">${StoreCart.formatPrice(p.price)}</p>
       <button type="button" class="btn-add" data-id="${p.id}">Add to cart</button>
     </article>
   `;
@@ -145,14 +112,53 @@ function renderProducts() {
 }
 
 function renderTrending() {
-  const trending = TRENDING_IDS.map((id) => PRODUCTS.find((p) => p.id === id)).filter(Boolean);
+  const trending = TRENDING_IDS.map((id) => StoreCart.getProduct(id)).filter(Boolean);
   trendingTrack.innerHTML = trending.map((p) => productCardHtml(p, true)).join("");
   bindAddButtons(trendingTrack);
 }
 
+function renderSpotlight() {
+  const p = StoreCart.getProduct(StoreProducts.spotlightId);
+  if (!p || !spotlightEl) return;
+  spotlightEl.innerHTML = `
+    <div class="spotlight-visual">${p.emoji}</div>
+    <div class="spotlight-body">
+      <span class="spotlight-tag">Featured pick</span>
+      <h3>${p.name}</h3>
+      <p>Our top-rated bag for work and travel — spacious, durable, and demo-ready for your portfolio.</p>
+      <div class="spotlight-meta">
+        <span class="product-price">${StoreCart.formatPrice(p.price)}</span>
+        <span class="spotlight-rating">★★★★★ <em>128 reviews</em></span>
+      </div>
+      <button type="button" class="btn-add" data-id="${p.id}">Add to cart</button>
+    </div>
+  `;
+  bindAddButtons(spotlightEl);
+}
+
+function renderCompactRows() {
+  const picks = ["p2", "p4", "p6"].map((id) => StoreCart.getProduct(id)).filter(Boolean);
+  compactRowsEl.innerHTML = picks
+    .map(
+      (p) => `
+    <article class="product-row">
+      <div class="product-row-visual">${p.emoji}</div>
+      <div class="product-row-body">
+        <span class="product-category">${p.category}</span>
+        <h3>${p.name}</h3>
+        <p class="product-price">${StoreCart.formatPrice(p.price)}</p>
+      </div>
+      <button type="button" class="btn-add btn-add-row" data-id="${p.id}">Add</button>
+    </article>
+  `
+    )
+    .join("");
+  bindAddButtons(compactRowsEl);
+}
+
 function renderCart() {
-  const count = getCartCount();
-  const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
+  const count = StoreCart.getCount(cart);
+  const entries = StoreCart.getEntries(cart);
 
   cartCountEl.textContent = count;
   cartCountEl.hidden = count === 0;
@@ -166,24 +172,22 @@ function renderCart() {
 
   cartEmptyEl.hidden = true;
   cartFooterEl.hidden = false;
-  cartTotalEl.textContent = formatPrice(getCartTotal());
+  cartTotalEl.textContent = StoreCart.formatPrice(StoreCart.getSubtotal(cart));
 
   cartItemsEl.innerHTML = entries
-    .map(([id, qty]) => {
-      const p = PRODUCTS.find((x) => x.id === id);
-      if (!p) return "";
+    .map(({ product, qty }) => {
       return `
         <li class="cart-item">
-          <span class="cart-item-emoji">${p.emoji}</span>
+          <span class="cart-item-emoji">${product.emoji}</span>
           <div class="cart-item-info">
-            <strong>${p.name}</strong>
-            <span>${formatPrice(p.price)} each</span>
+            <strong>${product.name}</strong>
+            <span>${StoreCart.formatPrice(product.price)} each</span>
           </div>
           <div class="cart-item-actions">
-            <button type="button" class="qty-btn" data-id="${id}" data-delta="-1" aria-label="Decrease">−</button>
+            <button type="button" class="qty-btn" data-id="${product.id}" data-delta="-1" aria-label="Decrease">−</button>
             <span class="qty">${qty}</span>
-            <button type="button" class="qty-btn" data-id="${id}" data-delta="1" aria-label="Increase">+</button>
-            <button type="button" class="remove-btn" data-id="${id}" aria-label="Remove">Remove</button>
+            <button type="button" class="qty-btn" data-id="${product.id}" data-delta="1" aria-label="Increase">+</button>
+            <button type="button" class="remove-btn" data-id="${product.id}" aria-label="Remove">Remove</button>
           </div>
         </li>
       `;
@@ -218,17 +222,14 @@ closeCart.addEventListener("click", closeCartPanel);
 cartOverlay.addEventListener("click", closeCartPanel);
 clearCartBtn.addEventListener("click", clearCart);
 checkoutBtn.addEventListener("click", () => {
-  const total = getCartTotal();
-  const count = getCartCount();
-  if (count === 0) return;
-  alert(
-    `Demo checkout\n\n${count} item(s)\nTotal: ${formatPrice(total)}\n\nThis is a proof of concept — no payment processed.`
-  );
-  clearCart();
+  if (StoreCart.getCount(cart) === 0) return;
   closeCartPanel();
+  window.location.href = "checkout.html";
 });
 
 renderChips();
+renderSpotlight();
 renderProducts();
+renderCompactRows();
 renderTrending();
 renderCart();

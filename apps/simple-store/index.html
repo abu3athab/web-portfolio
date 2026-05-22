@@ -32,6 +32,14 @@
 
     <section class="store-block">
       <div class="block-header">
+        <h3 class="section-label">Featured pick</h3>
+        <p class="section-desc">Spotlight layout — hero product with large visual and CTA.</p>
+      </div>
+      <article class="spotlight-card" id="spotlightProduct"></article>
+    </section>
+
+    <section class="store-block">
+      <div class="block-header">
         <h3 class="section-label">Filter by category</h3>
         <p class="section-desc">Chip strip — tap a category to filter the catalog below.</p>
       </div>
@@ -44,6 +52,14 @@
       <h3 class="section-label">All products</h3>
       <div class="products-grid" id="productsGrid"></div>
       <p class="filter-empty" id="filterEmpty" hidden>No products in this category.</p>
+    </section>
+
+    <section class="store-block">
+      <div class="block-header">
+        <h3 class="section-label">Quick picks</h3>
+        <p class="section-desc">Compact row layout — thumbnail, details, and action aligned horizontally.</p>
+      </div>
+      <div class="compact-rows" id="compactRows"></div>
     </section>
 
     <section class="store-block store-block-scroll">
@@ -134,6 +150,50 @@
         </li>
       </ul>
     </section>
+
+    <section class="store-block">
+      <div class="block-header">
+        <h3 class="section-label">Customer reviews</h3>
+        <p class="section-desc">Card grid — social proof and ratings.</p>
+      </div>
+      <div class="reviews-grid">
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>“Super easy to browse and add items. The cart panel feels smooth and polished.”</p>
+          <footer><strong>Sarah M.</strong> · Verified buyer</footer>
+        </article>
+        <article class="review-card review-card-accent">
+          <div class="review-stars">★★★★★</div>
+          <p>“Checkout demo is clear — loved picking payment methods without any real charge.”</p>
+          <footer><strong>Omar K.</strong> · Verified buyer</footer>
+        </article>
+        <article class="review-card">
+          <div class="review-stars">★★★★☆</div>
+          <p>“Great POC for a portfolio store. Category filters and layouts look professional.”</p>
+          <footer><strong>Lina H.</strong> · Verified buyer</footer>
+        </article>
+      </div>
+    </section>
+
+    <section class="promo-stack">
+      <article class="promo-banner promo-banner-1">
+        <span>Weekend sale</span>
+        <h3>Up to 20% off accessories</h3>
+        <p>Ends Sunday — demo promotion only.</p>
+      </article>
+      <article class="promo-banner promo-banner-2">
+        <span>New</span>
+        <h3>Free shipping over $50</h3>
+        <p>Applied automatically at demo checkout.</p>
+      </article>
+    </section>
+
+    <section class="stats-bar">
+      <div class="stat-item"><strong>2k+</strong><span>Demo orders</span></div>
+      <div class="stat-item"><strong>4.9</strong><span>Avg. rating</span></div>
+      <div class="stat-item"><strong>24h</strong><span>Delivery window</span></div>
+      <div class="stat-item"><strong>100%</strong><span>Secure POC</span></div>
+    </section>
   </main>
 
   <aside class="cart-panel" id="cartPanel" aria-hidden="true">
@@ -156,6 +216,7 @@
   </aside>
   <div class="cart-overlay" id="cartOverlay" hidden></div>
 
+  <script src="store-shared.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
