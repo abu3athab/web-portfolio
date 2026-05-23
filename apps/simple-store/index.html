@@ -216,7 +216,42 @@
   </aside>
   <div class="cart-overlay" id="cartOverlay" hidden></div>
 
+  <button type="button" class="assistant-fab" id="assistantToggle" aria-label="Open shopping assistant">
+    <span class="assistant-fab-icon">✦</span>
+    <span>Ask AI</span>
+  </button>
+
+  <aside class="assistant-panel" id="assistantPanel" aria-hidden="true">
+    <div class="assistant-panel-inner">
+      <header class="assistant-header">
+        <div>
+          <h2>Shopping assistant</h2>
+          <p>Powered by AI · knows products & your cart</p>
+        </div>
+        <div class="assistant-header-actions">
+          <button type="button" class="assistant-icon-btn" id="assistantClose" aria-label="Close assistant">×</button>
+        </div>
+      </header>
+
+      <div class="assistant-chips" id="assistantChips">
+        <button type="button" class="assistant-chip" data-prompt="What's in my cart?">My cart</button>
+        <button type="button" class="assistant-chip" data-prompt="Show items under $20">Under $20</button>
+        <button type="button" class="assistant-chip" data-prompt="Office desk setup ideas">Office setup</button>
+        <button type="button" class="assistant-chip" data-prompt="Travel essentials">Travel</button>
+      </div>
+
+      <div class="assistant-messages" id="assistantMessages" role="log" aria-live="polite"></div>
+
+      <form class="assistant-form" id="assistantForm">
+        <input type="text" id="assistantInput" placeholder="Ask about products, budget, cart…" autocomplete="off" maxlength="300" />
+        <button type="submit" class="assistant-send" aria-label="Send message">↑</button>
+      </form>
+    </div>
+  </aside>
+
   <script src="store-shared.js"></script>
   <script src="app.js"></script>
+  <script src="https://js.puter.com/v2/"></script>
+  <script src="assistant.js"></script>
 </body>
 </html>
