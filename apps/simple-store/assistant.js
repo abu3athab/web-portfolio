@@ -168,6 +168,10 @@ Free shipping over $50. Demo store only — no real payments.`;
     return `I'm not sure about that, but here are all **${StoreProducts.list.length}** products:\n${formatProductList(StoreProducts.list.slice(0, 5))}\n\n…and more in the catalog. Try “under $20” or “travel essentials”.`;
   }
 
+  function isGenericFallback(reply) {
+    return reply.startsWith("I'm not sure about that");
+  }
+
   function withTimeout(promise, ms) {
     return Promise.race([
       promise,
@@ -231,13 +235,25 @@ Free shipping over $50. Demo store only — no real payments.`;
     return el;
   }
 
-  async function handleSend(message) {
+  async function handleSend(message, options = {}) {
     const trimmed = message.trim();
     if (!trimmed || isBusy) return;
+
+    const localOnly = options.localOnly === true;
 
     setBusy(true);
     appendMessage("user", trimmed);
     input.value = "";
+
+    const localReply = getLocalResponse(trimmed);
+    const canAnswerLocally = localOnly || !isGenericFallback(localReply);
+
+    if (canAnswerLocally) {
+      appendMessage("assistant", localReply);
+      setBusy(false);
+      return;
+    }
+
     const typing = appendMessage("assistant", "", true);
 
     let reply = null;
@@ -247,7 +263,7 @@ Free shipping over $50. Demo store only — no real payments.`;
       reply = null;
     }
 
-    if (!reply) reply = getLocalResponse(trimmed);
+    if (!reply) reply = localReply;
 
     typing.classList.remove("typing");
     typing.innerHTML = renderMarkdown(reply);
@@ -281,7 +297,7 @@ Free shipping over $50. Demo store only — no real payments.`;
   });
 
   chipsEl.querySelectorAll(".assistant-chip").forEach((chip) => {
-    chip.addEventListener("click", () => handleSend(chip.dataset.prompt));
+    chip.addEventListener("click", () => handleSend(chip.dataset.prompt, { localOnly: true }));
   });
 
   appendMessage(
