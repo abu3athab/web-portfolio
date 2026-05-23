@@ -10,6 +10,8 @@
   if (!panel || !toggle) return;
 
   const AI_MODEL = "google/gemini-2.0-flash";
+  const AI_TIMEOUT_MS = 12000;
+  let isBusy = false;
 
   const CATEGORY_HINTS = {
     audio: ["audio", "music", "earbuds", "headphones", "listen"],
@@ -166,6 +168,13 @@ Free shipping over $50. Demo store only — no real payments.`;
     return `I'm not sure about that, but here are all **${StoreProducts.list.length}** products:\n${formatProductList(StoreProducts.list.slice(0, 5))}\n\n…and more in the catalog. Try “under $20” or “travel essentials”.`;
   }
 
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
+    ]);
+  }
+
   function extractPuterText(response) {
     if (typeof response === "string") return response.trim();
     const content = response?.message?.content;
@@ -180,12 +189,15 @@ Free shipping over $50. Demo store only — no real payments.`;
       throw new Error("Puter not loaded");
     }
 
-    const response = await puter.ai.chat(
-      [
-        { role: "system", content: buildSystemPrompt() },
-        { role: "user", content: message },
-      ],
-      { model: AI_MODEL, temperature: 0.7, max_tokens: 280 }
+    const response = await withTimeout(
+      puter.ai.chat(
+        [
+          { role: "system", content: buildSystemPrompt() },
+          { role: "user", content: message },
+        ],
+        { model: AI_MODEL, temperature: 0.7, max_tokens: 280 }
+      ),
+      AI_TIMEOUT_MS
     );
 
     const text = extractPuterText(response);
@@ -199,10 +211,21 @@ Free shipping over $50. Demo store only — no real payments.`;
       .replace(/\n/g, "<br>");
   }
 
+  function setBusy(busy) {
+    isBusy = busy;
+    input.disabled = busy;
+    form.querySelector(".assistant-send").disabled = busy;
+    chipsEl.querySelectorAll(".assistant-chip").forEach((chip) => {
+      chip.disabled = busy;
+    });
+  }
+
   function appendMessage(role, text, isTyping = false) {
     const el = document.createElement("div");
     el.className = `assistant-msg assistant-msg-${role}${isTyping ? " typing" : ""}`;
-    el.innerHTML = isTyping ? '<span class="dot-pulse"><span></span><span></span><span></span></span>' : renderMarkdown(text);
+    el.innerHTML = isTyping
+      ? '<span class="typing-label">Thinking…</span><span class="dot-pulse"><span></span><span></span><span></span></span>'
+      : renderMarkdown(text);
     messagesEl.appendChild(el);
     messagesEl.scrollTop = messagesEl.scrollHeight;
     return el;
@@ -210,8 +233,9 @@ Free shipping over $50. Demo store only — no real payments.`;
 
   async function handleSend(message) {
     const trimmed = message.trim();
-    if (!trimmed) return;
+    if (!trimmed || isBusy) return;
 
+    setBusy(true);
     appendMessage("user", trimmed);
     input.value = "";
     const typing = appendMessage("assistant", "", true);
@@ -228,9 +252,11 @@ Free shipping over $50. Demo store only — no real payments.`;
     typing.classList.remove("typing");
     typing.innerHTML = renderMarkdown(reply);
     messagesEl.scrollTop = messagesEl.scrollHeight;
+    setBusy(false);
   }
 
   function openPanel() {
+    panel.hidden = false;
     panel.classList.add("open");
     panel.setAttribute("aria-hidden", "false");
     input.focus();
@@ -238,6 +264,7 @@ Free shipping over $50. Demo store only — no real payments.`;
 
   function closePanel() {
     panel.classList.remove("open");
+    panel.hidden = true;
     panel.setAttribute("aria-hidden", "true");
   }
 
