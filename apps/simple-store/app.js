@@ -227,6 +227,8 @@ checkoutBtn.addEventListener("click", () => {
   window.location.href = "checkout.html";
 });
 
+window.simpleStoreAddToCart = addToCart;
+
 renderChips();
 renderSpotlight();
 renderProducts();
